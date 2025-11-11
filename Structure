@@ -1,0 +1,11 @@
+.
+├─ README.md
+├─ .gitignore
+├─ LICENSE
+├─ export/
+│  ├─ requirements.txt
+│  ├─ export_llm_coreml.py
+│  └─ Makefile   (optional but nice)
+└─ ios/
+   ├─ Runner.swift
+   └─ SPTokenizer.swift
