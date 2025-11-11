@@ -1,3 +1,17 @@
+.
+├─ README.md
+├─ .gitignore
+├─ LICENSE
+├─ export/
+│  ├─ requirements.txt
+│  ├─ export_llm_coreml.py
+│  └─ Makefile   (optional but nice)
+└─ ios/
+   ├─ Runner.swift
+   └─ SPTokenizer.swift
+
+
+
 # Pytorch-to-CoreML-conversion-Llama-based-models-
 PyTorch LLaMA-style LLM → Core ML exporter with full KV cache support for fast on-device inference (iOS/macOS).
 # PyTorch → Core ML (Decoder-Only LLMs)
@@ -5,6 +19,11 @@ PyTorch LLaMA-style LLM → Core ML exporter with full KV cache support for fast
 Export Hugging Face **decoder-only** models (LLaMA / Mistral / Falcon / GPT-NeoX / Gemma / Phi-2 / GPT-2…) to **Core ML mlprogram** with KV cache, then run them on **iOS/macOS** with Swift.
 
 > Built and documented with support from **ChatGPT (GPT-5)**.
+> Not a drop in code for all models. User should make necessary changes in the code.
+> Suggest using AI for backup and the user should have the desired output in mind before communicating with ai whilst using this code.
+> This code has been tested and executed on Apple M1 Arm chipsets and has been optimized for NPU/GPU/CPU based model conversion(Not guranteed to run on all macbooks and apple silicon chipsets at the full potential , may need some tweaks and changes while model conversion.
+> ⚠️ Will consume memory Unless you have good storage for system swap.(model running on swift) 
+> ⚠️ May take long time to convert into coreml.
 
 ---
 
@@ -30,7 +49,6 @@ python export_llm_coreml.py \
 Outputs:
 	•	output/<sanitized-name>_legacycache.mlpackage
 	•	output/<sanitized-name>_manifest.json  ← iOS code reads shapes from here
-
 
 TL;DR (iOS/macOS)
 	1.	Drag *.mlpackage + *_manifest.json into Xcode (Copy items + add to target).
