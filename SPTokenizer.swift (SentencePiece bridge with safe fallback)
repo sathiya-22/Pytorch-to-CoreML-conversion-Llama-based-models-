@@ -1,0 +1,36 @@
+import Foundation
+
+#if canImport(SentencepieceTokenizer)
+import SentencepieceTokenizer
+final class SPTokenizer {
+    private let sp: SentencepieceTokenizer
+    // Tune these from your tokenizer / special_tokens_map.json
+    let bosId: Int32 = 1
+    let eosId: Int32 = 2
+
+    init() {
+        guard let url = Bundle.main.url(forResource: "tokenizer", withExtension: "model") else {
+            fatalError("tokenizer.model missing from bundle")
+        }
+        do {
+            sp = try SentencepieceTokenizer(modelPath: url.path)
+        } catch {
+            fatalError("SentencePiece init failed: \(error)")
+        }
+    }
+    func encode(_ text: String) -> [Int32] { sp.encode(text).map { Int32($0) } }
+    func decode(_ ids: [Int32]) -> String { sp.decode(ids.map { Int($0) }) }
+}
+#else
+// Fallback so the app still builds without SP lib
+final class SPTokenizer {
+    let bosId: Int32 = 1
+    let eosId: Int32 = 2
+    init() { print("[SPTokenizer] Using fallback; add SentencepieceTokenizer package for real tokenization.") }
+    func encode(_ text: String) -> [Int32] { text.unicodeScalars.map { Int32($0.value) } }
+    func decode(_ ids: [Int32]) -> String {
+        let scalars = ids.compactMap { UnicodeScalar(UInt32($0)) }
+        return String(String.UnicodeScalarView(scalars))
+    }
+}
+#endif
